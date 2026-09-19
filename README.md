@@ -1,35 +1,32 @@
-# CricCast Live
+# React + TypeScript + Vite
 
-A production-style, dependency-free cricket scoring control panel and OBS browser-source overlay.
+This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
-## Run
+Currently, two official plugins are available:
 
-Serve this folder from any static server (or open `index.html` for local scoring). For the overlay, add one of these as an OBS Browser Source:
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-- `overlay.html?layout=bar`
-- `overlay.html?layout=compact`
-- `overlay.html?layout=card`
-- `overlay.html?layout=squads` (full Playing XI graphic)
+## React Compiler
 
-Both pages must be served from the same origin. State is saved in the browser and synchronized live with `BroadcastChannel`.
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Deploying for multi-device scoring
+## Expanding the Oxlint configuration
 
-Deploy the files to a static host and replace the `LocalMatchStore` adapter in `js/store.js` with a Firebase/Supabase realtime adapter. The state contract is documented in `docs/state-schema.md`; UI code consumes only `store.get()` and `store.save()`.
+If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
 
-## Project map
-
+```json
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "typescript", "oxc"],
+  "options": {
+    "typeAware": true
+  },
+  "rules": {
+    "react/rules-of-hooks": "error",
+    "react/only-export-components": ["warn", { "allowConstantExport": true }]
+  }
+}
 ```
-index.html                 Admin scoring panel
-overlay.html               OBS overlay renderer
-css/app.css                Admin and overlay styles
-js/store.js                Persistent realtime state adapter
-js/scoring.js              Cricket scoring domain logic
-js/admin.js                Admin panel rendering and controls
-js/overlay.js              Overlay rendering and URL layouts
-docs/state-schema.md       State/database contract
-```
 
-## Squad workflow
-
-Add players individually under **Team Squads**, then mark one captain and wicket-keeper per side. The striker, non-striker and bowler controls use these squad lists automatically. A wicket opens a next-batter chooser, and the sixth legal ball opens a next-bowler chooser.
+See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
